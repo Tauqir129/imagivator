@@ -5,7 +5,7 @@ import { Image, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 interface ImageDropzoneProps {
-  onImageSelect: (file: File) => void;
+  onImageSelect: (files: File[]) => void;
 }
 
 export const ImageDropzone: React.FC<ImageDropzoneProps> = ({ onImageSelect }) => {
@@ -13,14 +13,12 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({ onImageSelect }) =
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (acceptedFiles.length > 0) {
-        const file = acceptedFiles[0];
-        if (file.type.startsWith("image/")) {
-          onImageSelect(file);
-          toast.success("Image uploaded successfully!");
-        } else {
-          toast.error("Please upload an image file");
-        }
+      const validFiles = acceptedFiles.filter(file => file.type.startsWith('image/'));
+      if (validFiles.length > 0) {
+        onImageSelect(validFiles);
+        toast.success(`${validFiles.length} image(s) uploaded successfully!`);
+      } else {
+        toast.error("Please upload valid image files");
       }
     },
     [onImageSelect]
@@ -29,9 +27,15 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({ onImageSelect }) =
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".webp", ".gif"],
+      'image/*': [
+        '.jpg', '.jpeg', '.png', '.gif', '.bmp', 
+        '.tiff', '.tif', '.webp', '.heif', '.heic',
+        '.psd', '.exr', '.raw', '.svg', '.eps',
+        '.ai', '.pdf', '.ico', '.tga', '.dds',
+        '.pcx', '.xcf'
+      ]
     },
-    multiple: false,
+    multiple: true,
     onDragEnter: () => setIsDragging(true),
     onDragLeave: () => setIsDragging(false),
   });
@@ -55,9 +59,12 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({ onImageSelect }) =
           <Upload className="w-8 h-8 text-primary animate-float" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-lg font-medium">Drop your image here</h3>
+          <h3 className="text-lg font-medium">Drop your images here</h3>
           <p className="text-sm text-gray-500">
-            or click to select from your computer
+            Supports multiple images - JPG, PNG, GIF, WEBP, and more
+          </p>
+          <p className="text-xs text-gray-400">
+            Drop multiple files or click to select
           </p>
         </div>
       </div>

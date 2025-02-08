@@ -2,17 +2,17 @@
 import React, { useState } from "react";
 import { ImageDropzone } from "@/components/ImageDropzone";
 import { ImageProcessor } from "@/components/ImageProcessor";
-import { Image, RefreshCw } from "lucide-react";
+import { Image, RefreshCw, Layers } from "lucide-react";
 
 const Index = () => {
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
-  const handleImageSelect = (file: File) => {
-    setSelectedImage(file);
+  const handleImageSelect = (files: File[]) => {
+    setSelectedImages(files);
   };
 
   const handleReset = () => {
-    setSelectedImage(null);
+    setSelectedImages([]);
   };
 
   return (
@@ -23,19 +23,42 @@ const Index = () => {
             <Image className="w-8 h-8 text-primary" />
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Image Converter
+            Image Converter Pro
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Convert, resize, and optimize your images in seconds. No upload needed -
-            everything happens right in your browser.
+            Convert multiple images to any format instantly. Supports JPG, PNG, GIF, WEBP, 
+            and many more formats. Process everything right in your browser.
           </p>
         </div>
 
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-2xl shadow-xl p-6 space-y-8 animate-fade-in">
             <ImageDropzone onImageSelect={handleImageSelect} />
-            {selectedImage && (
-              <ImageProcessor image={selectedImage} onReset={handleReset} />
+            {selectedImages.length > 0 && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">
+                    Processing {selectedImages.length} image{selectedImages.length > 1 ? 's' : ''}
+                  </h3>
+                  <button
+                    onClick={handleReset}
+                    className="text-sm text-gray-500 hover:text-gray-700"
+                  >
+                    Reset All
+                  </button>
+                </div>
+                {selectedImages.map((image, index) => (
+                  <ImageProcessor
+                    key={`${image.name}-${index}`}
+                    image={image}
+                    onReset={() => {
+                      const newImages = [...selectedImages];
+                      newImages.splice(index, 1);
+                      setSelectedImages(newImages);
+                    }}
+                  />
+                ))}
+              </div>
             )}
           </div>
 
@@ -61,19 +84,19 @@ const Index = () => {
 
 const features = [
   {
+    title: "Multiple Formats",
+    description: "Convert between various formats including PNG, JPEG, WEBP, GIF, and more.",
+    icon: <Image className="w-6 h-6 text-primary" />,
+  },
+  {
+    title: "Batch Processing",
+    description: "Convert multiple images at once with bulk upload support.",
+    icon: <Layers className="w-6 h-6 text-primary" />,
+  },
+  {
     title: "Local Processing",
     description: "All processing happens in your browser - no server uploads needed.",
-    icon: <Image className="w-6 h-6 text-primary" />,
-  },
-  {
-    title: "Multiple Formats",
-    description: "Convert between PNG, JPEG, and WebP formats easily.",
     icon: <RefreshCw className="w-6 h-6 text-primary" />,
-  },
-  {
-    title: "Preserve Quality",
-    description: "Maintain image quality while optimizing file size.",
-    icon: <Image className="w-6 h-6 text-primary" />,
   },
 ];
 
