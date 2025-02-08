@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { ImageDropzone } from "@/components/ImageDropzone";
 import { ImageProcessor } from "@/components/ImageProcessor";
-import { Image } from "lucide-react";
+import { Image, RefreshCw } from "lucide-react";
 
 const Index = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
