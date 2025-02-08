@@ -32,7 +32,6 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
     const url = URL.createObjectURL(image);
     setPreview(url);
 
-    // Load image to get original dimensions
     const img = document.createElement("img");
     img.onload = () => {
       setWidth(img.width);
@@ -45,6 +44,10 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
 
   const handleFormatChange = (value: string) => {
     setFormat(value);
+    // Show warning for unsupported formats
+    if (["tiff", "heif", "psd", "exr", "raw", "eps", "ai", "pdf", "tga", "dds", "pcx", "xcf"].includes(value)) {
+      toast.warning("This format may not be supported in all browsers");
+    }
   };
 
   const handleQualityChange = (value: number[]) => {
@@ -77,6 +80,31 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
         ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+        // For SVG format, create SVG data
+        if (format === 'svg') {
+          try {
+            const svgData = `
+              <svg width="${targetWidth}" height="${targetHeight}" xmlns="http://www.w3.org/2000/svg">
+                <image width="${targetWidth}" height="${targetHeight}" href="${canvas.toDataURL('image/png')}" />
+              </svg>
+            `;
+            const blob = new Blob([svgData], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `converted-image.svg`;
+            link.click();
+            URL.revokeObjectURL(url);
+            toast.success("Image converted to SVG successfully!");
+            setProcessing(false);
+            return;
+          } catch (error) {
+            toast.error("Error converting to SVG");
+            setProcessing(false);
+            return;
+          }
+        }
 
         canvas.toBlob(
           (blob) => {
@@ -137,6 +165,20 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
                   <SelectItem value="webp">WebP</SelectItem>
                   <SelectItem value="gif">GIF</SelectItem>
                   <SelectItem value="bmp">BMP</SelectItem>
+                  <SelectItem value="tiff">TIFF/TIF</SelectItem>
+                  <SelectItem value="heif">HEIF/HEIC</SelectItem>
+                  <SelectItem value="psd">PSD</SelectItem>
+                  <SelectItem value="exr">EXR</SelectItem>
+                  <SelectItem value="raw">RAW</SelectItem>
+                  <SelectItem value="svg">SVG</SelectItem>
+                  <SelectItem value="eps">EPS</SelectItem>
+                  <SelectItem value="ai">AI</SelectItem>
+                  <SelectItem value="pdf">PDF</SelectItem>
+                  <SelectItem value="ico">ICO</SelectItem>
+                  <SelectItem value="tga">TGA</SelectItem>
+                  <SelectItem value="dds">DDS</SelectItem>
+                  <SelectItem value="pcx">PCX</SelectItem>
+                  <SelectItem value="xcf">XCF</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -198,4 +240,3 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
     </div>
   );
 };
-
