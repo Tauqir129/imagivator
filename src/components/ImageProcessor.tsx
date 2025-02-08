@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Download, RefreshCw, Image } from "lucide-react";
+import { Download, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 interface ImageProcessorProps {
@@ -31,6 +31,15 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
   useEffect(() => {
     const url = URL.createObjectURL(image);
     setPreview(url);
+
+    // Load image to get original dimensions
+    const img = document.createElement("img");
+    img.onload = () => {
+      setWidth(img.width);
+      setHeight(img.height);
+    };
+    img.src = url;
+
     return () => URL.revokeObjectURL(url);
   }, [image]);
 
@@ -47,13 +56,17 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
 
     setProcessing(true);
     try {
-      const img = new Image();
+      const img = document.createElement("img");
       const originalUrl = URL.createObjectURL(image);
 
       img.onload = () => {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
-        if (!ctx) return;
+        if (!ctx) {
+          toast.error("Canvas context not supported");
+          setProcessing(false);
+          return;
+        }
 
         const targetWidth = width || img.width;
         const targetHeight = height || img.height;
@@ -119,8 +132,8 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="jpeg">JPEG/JPG</SelectItem>
                   <SelectItem value="png">PNG</SelectItem>
-                  <SelectItem value="jpeg">JPEG</SelectItem>
                   <SelectItem value="webp">WebP</SelectItem>
                   <SelectItem value="gif">GIF</SelectItem>
                   <SelectItem value="bmp">BMP</SelectItem>
@@ -185,3 +198,4 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
     </div>
   );
 };
+
