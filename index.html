@@ -14,11 +14,96 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Image Converter Pro - Convert Any Image Format Online" />
     <meta name="twitter:description" content="Free online image converter. Convert and optimize images instantly in your browser." />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sonner@1.0.3/dist/sonner.js"></script>
   </head>
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+  <body class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div class="container py-12 px-4 sm:px-6 lg:px-8 mx-auto">
+      <div class="text-center space-y-4 mb-12 animate-fade-in">
+        <div class="inline-block p-3 rounded-full bg-purple-100 mb-4">
+          <svg class="w-8 h-8 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          Image Converter Pro
+        </h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Convert multiple images to any format instantly. Supports JPG, PNG, GIF, WEBP, 
+          and many more formats. Process everything right in your browser.
+        </p>
+      </div>
+
+      <div class="max-w-3xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-xl p-6 space-y-8 animate-fade-in">
+          <div id="dropzone" class="relative w-full h-64 border-2 border-dashed rounded-xl transition-all duration-200 ease-in-out border-gray-300 hover:border-purple-500 cursor-pointer">
+            <input type="file" id="fileInput" multiple accept="image/*" class="hidden" />
+            <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center space-y-4">
+              <div class="p-4 rounded-full bg-purple-100">
+                <svg class="w-8 h-8 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <div class="space-y-2">
+                <h3 class="text-lg font-medium">Drop your images here</h3>
+                <p class="text-sm text-gray-500">
+                  Supports multiple images - JPG, PNG, GIF, WEBP, and more
+                </p>
+                <p class="text-xs text-gray-400">
+                  Drop multiple files or click to select
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div id="imageProcessors" class="space-y-6"></div>
+        </div>
+
+        <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3 text-center animate-slide-up">
+          <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
+            <div class="flex items-center justify-center w-12 h-12 mx-auto bg-purple-100 rounded-full">
+              <svg class="w-6 h-6 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold">Multiple Formats</h3>
+            <p class="mt-2 text-sm text-gray-600">Convert between various formats including PNG, JPEG, WEBP, GIF, and more.</p>
+          </div>
+
+          <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
+            <div class="flex items-center justify-center w-12 h-12 mx-auto bg-purple-100 rounded-full">
+              <svg class="w-6 h-6 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <rect x="7" y="7" width="18" height="18" rx="2" ry="2"></rect>
+              </svg>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold">Batch Processing</h3>
+            <p class="mt-2 text-sm text-gray-600">Convert multiple images at once with bulk upload support.</p>
+          </div>
+
+          <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
+            <div class="flex items-center justify-center w-12 h-12 mx-auto bg-purple-100 rounded-full">
+              <svg class="w-6 h-6 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.85.83 6.72 2.24"></path>
+                <path d="M3 12h18"></path>
+              </svg>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold">Local Processing</h3>
+            <p class="mt-2 text-sm text-gray-600">All processing happens in your browser - no server uploads needed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toaster" class="fixed bottom-4 right-4"></div>
+    <script src="app.js"></script>
   </body>
 </html>
-
