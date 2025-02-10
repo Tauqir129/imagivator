@@ -39,6 +39,8 @@
   align-items: center;
   gap: 0.5rem;
   animation: slide-up 0.3s ease-out;
+  z-index: 50;
+  max-width: calc(100% - 2rem);
 }
 
 .toast.success {
@@ -51,4 +53,49 @@
 
 .toast.warning {
   border-left: 4px solid #F59E0B;
+}
+
+/* Add responsive styles */
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  #imageProcessors {
+    padding: 0;
+  }
+  
+  .space-y-6 {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Make the image processor card responsive */
+  .flex.items-start.gap-6 {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  /* Make the preview image container full width on mobile */
+  .w-32.h-32 {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+  }
+  
+  /* Adjust input containers */
+  .grid.grid-cols-2.gap-4 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Make buttons stack on mobile */
+  .flex.gap-4 {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  /* Ensure text doesn't overflow */
+  .text-sm {
+    word-break: break-word;
+  }
 }

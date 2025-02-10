@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
   const dropzone = document.getElementById('dropzone');
   const fileInput = document.getElementById('fileInput');
@@ -34,14 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const preview = URL.createObjectURL(image);
     
     processor.innerHTML = `
-      <div class="flex items-start gap-6">
+      <div class="flex items-start gap-6 flex-wrap">
         <div class="w-32 h-32 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
           <img src="${preview}" alt="Preview" class="w-full h-full object-cover">
         </div>
         
-        <div class="flex-1 space-y-4">
+        <div class="flex-1 min-w-[250px] space-y-4">
           <div class="flex items-center justify-between">
-            <span class="text-sm font-medium">${image.name}</span>
+            <span class="text-sm font-medium break-all">${image.name}</span>
             <span class="text-xs text-gray-500">${(image.size / (1024 * 1024)).toFixed(2)} MB</span>
           </div>
 
@@ -76,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <input type="range" class="quality-slider w-full" min="1" max="100" value="90">
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-2">
               <div class="space-y-2">
                 <label class="text-sm font-medium">Width (px)</label>
                 <input type="number" class="width-input w-full px-3 py-2 border rounded-md" placeholder="Original">
@@ -88,11 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
 
-          <div class="flex gap-4">
+          <div class="flex gap-4 flex-col sm:flex-row">
             <button class="process-btn flex-1 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors">
               Download
             </button>
-            <button class="remove-btn px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+            <button class="remove-btn w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
               Remove
             </button>
           </div>
