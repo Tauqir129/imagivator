@@ -28,6 +28,7 @@ jobs:
         with:
           name: production-files
           path: ./dist
+          include-hidden-files: true  # Include hidden files if necessary
 
   deploy:
     name: Deploy
@@ -37,13 +38,15 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: production-files
           path: ./dist
+          merge: true  # Merge all artifacts into the specified directory
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          publish_branch: gh-pages
